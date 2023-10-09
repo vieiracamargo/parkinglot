@@ -1,4 +1,4 @@
-package com.github.vieiracamargo;
+package com.github.vieiracamargo.repository;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
