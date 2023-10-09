@@ -1,4 +1,4 @@
-package exception;
+package com.github.vieiracamargo.exception;
 
 public record Message(
         String field,

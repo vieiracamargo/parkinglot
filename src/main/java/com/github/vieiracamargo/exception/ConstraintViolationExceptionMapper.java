@@ -1,4 +1,4 @@
-package exception;
+package com.github.vieiracamargo.exception;
 
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.core.Response;
