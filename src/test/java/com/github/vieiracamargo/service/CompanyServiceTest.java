@@ -8,6 +8,7 @@ import com.github.vieiracamargo.dto.output.CompanyOutput;
 import com.github.vieiracamargo.dto.output.CompanyOutputMapper;
 import com.github.vieiracamargo.entities.Address;
 import com.github.vieiracamargo.entities.Company;
+import com.github.vieiracamargo.exception.CompanyAlreadyExistsException;
 import com.github.vieiracamargo.exception.CompanyNotFoundException;
 import com.github.vieiracamargo.repository.CompanyRepository;
 import com.github.vieiracamargo.repository.Repository;
@@ -33,9 +34,11 @@ class CompanyServiceTest {
     CompanyService companyService;
     CompanyInput companyInput;
 
+    Company company;
+
     @BeforeEach
     void setup() {
-        AddressInput address = new AddressInput(
+        AddressInput addressInput = new AddressInput(
                 "Dos matagais",
                 "Goiânia",
                 "Goiás",
@@ -48,6 +51,26 @@ class CompanyServiceTest {
         companyInput = new CompanyInput(
                 "Joselu IT",
                 "66261814000198",
+                addressInput,
+                "(95)97546-8754",
+                10,
+                20
+        );
+
+        Address address = new Address(
+                "Dos matagais",
+                "Goiânia",
+                "Goiás",
+                "Brasil",
+                "74597010",
+                "Residencial dos Ipês",
+                "Qd.13 Lt.34"
+        );
+
+        company = new Company(
+                1L,
+                "Joselu IT",
+                "66261814000198",
                 address,
                 "(95)97546-8754",
                 10,
@@ -58,6 +81,18 @@ class CompanyServiceTest {
         companyOutputMapper = new CompanyOutputMapper();
         repository = Mockito.mock(CompanyRepository.class);
         companyService = new CompanyService(mapper, companyOutputMapper, repository);
+    }
+
+    @Test
+    void should_throw_company_already_exists_exception_if_cnpj_already_registered() {
+        // Given
+        Optional<Company> expected = Optional.of(company);
+        // When
+        Mockito.when(repository.findByCnpjOptional(Mockito.any(String.class))).thenReturn(expected);
+        // Then
+        Assertions.assertThrows(CompanyAlreadyExistsException.class,
+                () -> companyService.registerCompany(companyInput)
+        );
     }
 
     @Test
@@ -101,7 +136,7 @@ class CompanyServiceTest {
     }
 
     @Test
-    void should_throw_CompanyNotFoundException_if_is_invalid_id() {
+    void should_throw_company_not_found_exception_if_is_invalid_id() {
         // When
         Mockito.when(repository.findByIdOptional(Mockito.any())).thenReturn(Optional.empty());
         // Then
@@ -155,5 +190,4 @@ class CompanyServiceTest {
         Assertions.assertNotNull(actual);
         Assertions.assertTrue(actual.isEmpty());
     }
-
 }
