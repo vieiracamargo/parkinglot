@@ -5,7 +5,6 @@ import com.github.vieiracamargo.dto.input.AddressInput;
 import com.github.vieiracamargo.dto.input.CompanyInput;
 import com.github.vieiracamargo.dto.input.CompanyMapper;
 import com.github.vieiracamargo.dto.output.CompanyOutput;
-import com.github.vieiracamargo.dto.output.CompanyOutputMapper;
 import com.github.vieiracamargo.entities.Address;
 import com.github.vieiracamargo.entities.Company;
 import com.github.vieiracamargo.exception.CompanyAlreadyExistsException;
@@ -27,13 +26,10 @@ import java.util.Optional;
 
 @QuarkusTest
 class CompanyServiceTest {
-
     CompanyMapper mapper;
-    CompanyOutputMapper companyOutputMapper;
     Repository repository;
     CompanyService companyService;
     CompanyInput companyInput;
-
     Company company;
 
     @BeforeEach
@@ -78,9 +74,8 @@ class CompanyServiceTest {
         );
 
         mapper = new CompanyMapper();
-        companyOutputMapper = new CompanyOutputMapper();
         repository = Mockito.mock(CompanyRepository.class);
-        companyService = new CompanyService(mapper, companyOutputMapper, repository);
+        companyService = new CompanyService(mapper, repository);
     }
 
     @Test
@@ -101,7 +96,7 @@ class CompanyServiceTest {
         Mockito.doNothing().when(repository).persist(Mockito.any(Company.class));
         CompanyOutput companyOutput = companyService.registerCompany(companyInput);
         // Then
-        Mockito.verify(repository, Mockito.times(1)).persist(mapper.mapToCompany(companyInput));
+        Mockito.verify(repository, Mockito.times(1)).persist(mapper.toCompany(companyInput));
         Assertions.assertNotNull(companyOutput);
     }
 
@@ -130,7 +125,7 @@ class CompanyServiceTest {
         // When
         Mockito.when(repository.findByIdOptional(Mockito.any(Long.class))).thenReturn(Optional.of(output));
         CompanyOutput response = companyService.findCompanyById(1L);
-        CompanyOutput expected = companyOutputMapper.mapToCompanyOutput(output);
+        CompanyOutput expected = mapper.toCompanyOutput(output);
         // Then
         Assertions.assertEquals(expected, response);
     }
@@ -158,7 +153,7 @@ class CompanyServiceTest {
         List<Company> companies = List.of(company);
         List<CompanyOutput> expected = companies
                 .stream()
-                .map(c -> companyOutputMapper.mapToCompanyOutput(c))
+                .map(c -> mapper.toCompanyOutput(c))
                 .toList();
         // When
         Mockito.when(repository.findAll(Mockito.any(Sort.class))).thenReturn(query);
