@@ -61,7 +61,7 @@ class CompanyServiceTest {
     }
 
     @Test
-    void test_company_successfully_registered() {
+    void should_successfully_register_a_company() {
         // When
         Mockito.doNothing().when(repository).persist(Mockito.any(Company.class));
         CompanyOutput companyOutput = companyService.registerCompany(companyInput);
@@ -71,7 +71,7 @@ class CompanyServiceTest {
     }
 
     @Test
-    void find_company_by_id_with_valid_id() {
+    void should_find_company_when_given_valid_id() {
         //Given
         Address addressOutput = new Address(
                 "Dos matagais",
@@ -101,7 +101,7 @@ class CompanyServiceTest {
     }
 
     @Test
-    void throw_CompanyNotFoundException_if_is_invalid_id() {
+    void should_throw_CompanyNotFoundException_if_is_invalid_id() {
         // When
         Mockito.when(repository.findByIdOptional(Mockito.any())).thenReturn(Optional.empty());
         // Then
@@ -139,7 +139,7 @@ class CompanyServiceTest {
     }
 
     @Test
-    void no_companies_found() {
+    void should_return_empty_list_when_there_is_no_registered_companies() {
         // Given
         int startPage = 0;
         int size = 10;
@@ -155,4 +155,5 @@ class CompanyServiceTest {
         Assertions.assertNotNull(actual);
         Assertions.assertTrue(actual.isEmpty());
     }
+
 }
