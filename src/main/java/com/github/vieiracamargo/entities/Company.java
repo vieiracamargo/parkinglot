@@ -37,7 +37,6 @@ public class Company {
     public Long getId() {
         return id;
     }
-
     public String getName() {
         return name;
     }
@@ -52,6 +51,34 @@ public class Company {
 
     public String getPhone() {
         return phone;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setNumberOfMotocyclesSpaces(Integer numberOfMotocyclesSpaces) {
+        this.numberOfMotocyclesSpaces = numberOfMotocyclesSpaces;
+    }
+
+    public void setNumberOfCarSpaces(Integer numberOfCarSpaces) {
+        this.numberOfCarSpaces = numberOfCarSpaces;
     }
 
     public Integer getNumberOfMotocyclesSpaces() {

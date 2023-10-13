@@ -39,19 +39,10 @@ public class CompanyService {
         repository.persist(company);
         return companyOutputMapper.mapToCompanyOutput(company);
     }
-
-    private boolean companyAlreadyExists(Company company) {
-        return repository.findByCnpjOptional(company.getCnpj()).isPresent();
-    }
-
     public CompanyOutput findCompanyById(Long companyId) {
-        Company response = repository
-                .findByIdOptional(companyId)
-                .orElseThrow(() -> new CompanyNotFoundException("Could not find company with id " + companyId));
-
+        Company response = getCompanyByid(companyId);
         return companyOutputMapper.mapToCompanyOutput(response);
     }
-
     public List<CompanyOutput> findAll(int startPage, int size, String column, Sort.Direction direction) {
         Page page = Page.of(startPage, size);
         Sort sort = Sort.by(column, direction);
@@ -63,6 +54,32 @@ public class CompanyService {
                 .stream()
                 .map(companyOutputMapper::mapToCompanyOutput)
                 .toList();
+    }
+
+    @Transactional
+    public CompanyOutput updateCompany(Long companyId, CompanyInput update) {
+        Company existingCompany = getCompanyByid(companyId);
+        Company updatedCompany = updateCompanyData(existingCompany, update);
+        repository.persist(updatedCompany);
+        return companyOutputMapper.mapToCompanyOutput(updatedCompany);
+    }
+    private boolean companyAlreadyExists(Company company) {
+        return repository.findByCnpjOptional(company.getCnpj()).isPresent();
+    }
+    private Company getCompanyByid(Long companyId) {
+        return repository
+                .findByIdOptional(companyId)
+                .orElseThrow(() -> new CompanyNotFoundException("Could not find company with id " + companyId));
+    }
+    private Company updateCompanyData(Company existingCompany, CompanyInput update) {
+        Company updateData = companyMapper.mapToCompany(update);
+        existingCompany.setName(updateData.getName());
+        existingCompany.setCnpj(updateData.getCnpj());
+        existingCompany.setAddress(updateData.getAddress());
+        existingCompany.setPhone(updateData.getPhone());
+        existingCompany.setNumberOfMotocyclesSpaces(updateData.getNumberOfMotocyclesSpaces());
+        existingCompany.setNumberOfMotocyclesSpaces(update.numberOfCarSpaces());
+        return existingCompany;
     }
 
 }

@@ -50,4 +50,12 @@ public class CompanyResource {
         List<CompanyOutput> allCompanies = companyService.findAll(startPage, size, column, direction);
         return Response.ok(allCompanies).build();
     }
+
+    @PUT
+    @Path("{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateCompany(@PathParam("id") Long companyId, @Valid CompanyInput companyInput){
+        CompanyOutput companyOutput = companyService.updateCompany(companyId, companyInput);
+        return Response.ok(companyOutput).build();
+    }
 }
