@@ -1,7 +1,6 @@
 package com.github.vieiracamargo.dto.input;
 
 import com.github.vieiracamargo.entities.Address;
-import com.github.vieiracamargo.entities.CnpjNumber;
 import com.github.vieiracamargo.entities.Company;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -9,10 +8,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class CompanyMapper {
     public Company mapToCompany(CompanyInput registration) {
         Address address = mapToAddress(registration.address());
-        CnpjNumber cnpjNumber = mapToCnpjNumber(registration.cpnj());
         return new Company(
                 registration.name(),
-                cnpjNumber,
+                registration.cpnj(),
                 address,
                 registration.phone(),
                 registration.numberOfMotocyclesSpaces(),
@@ -29,12 +27,6 @@ public class CompanyMapper {
                 addressInput.zipCode(),
                 addressInput.neighborhood(),
                 addressInput.complement()
-        );
-    }
-
-    private CnpjNumber mapToCnpjNumber(CnpjNumberInput cnpjNumberInput){
-        return new CnpjNumber(
-                cnpjNumberInput.number()
         );
     }
 }

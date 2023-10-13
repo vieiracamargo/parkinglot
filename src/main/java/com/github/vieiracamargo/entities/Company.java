@@ -14,10 +14,8 @@ public class Company {
 
     @Column(name = "name", nullable = false)
     private String name;
-
-    @Embedded
     @Column(name = "cnpj", nullable = false)
-    private CnpjNumber cnpjNumber;
+    private String cnpj;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     private Address address;
@@ -44,8 +42,8 @@ public class Company {
         return name;
     }
 
-    public CnpjNumber getCnpjNumber() {
-        return cnpjNumber;
+    public String getCnpj() {
+        return cnpj;
     }
 
     public Address getAddress() {
@@ -64,19 +62,19 @@ public class Company {
         return numberOfCarSpaces;
     }
 
-    public Company(String name, CnpjNumber cnpjNumber, Address address, String phone, Integer numberOfMotocyclesSpaces, Integer numberOfCarSpaces) {
+    public Company(Long id, String name, String cnpj, Address address, String phone, Integer numberOfMotocyclesSpaces, Integer numberOfCarSpaces) {
+        this.id = id;
         this.name = name;
-        this.cnpjNumber = cnpjNumber;
+        this.cnpj = cnpj;
         this.address = address;
         this.phone = phone;
         this.numberOfMotocyclesSpaces = numberOfMotocyclesSpaces;
         this.numberOfCarSpaces = numberOfCarSpaces;
     }
 
-    public Company(Long id, String name, CnpjNumber cnpjNumber, Address address, String phone, Integer numberOfMotocyclesSpaces, Integer numberOfCarSpaces) {
-        this.id = id;
+    public Company(String name, String cnpj, Address address, String phone, Integer numberOfMotocyclesSpaces, Integer numberOfCarSpaces) {
         this.name = name;
-        this.cnpjNumber = cnpjNumber;
+        this.cnpj = cnpj;
         this.address = address;
         this.phone = phone;
         this.numberOfMotocyclesSpaces = numberOfMotocyclesSpaces;
@@ -88,12 +86,12 @@ public class Company {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Company company = (Company) o;
-        return Objects.equals(id, company.id) && Objects.equals(name, company.name) && Objects.equals(cnpjNumber, company.cnpjNumber) && Objects.equals(address, company.address) && Objects.equals(phone, company.phone) && Objects.equals(numberOfMotocyclesSpaces, company.numberOfMotocyclesSpaces) && Objects.equals(numberOfCarSpaces, company.numberOfCarSpaces);
+        return Objects.equals(id, company.id) && Objects.equals(name, company.name) && Objects.equals(cnpj, company.cnpj) && Objects.equals(address, company.address) && Objects.equals(phone, company.phone) && Objects.equals(numberOfMotocyclesSpaces, company.numberOfMotocyclesSpaces) && Objects.equals(numberOfCarSpaces, company.numberOfCarSpaces);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, cnpjNumber, address, phone, numberOfMotocyclesSpaces, numberOfCarSpaces);
+        return Objects.hash(id, name, cnpj, address, phone, numberOfMotocyclesSpaces, numberOfCarSpaces);
     }
 }
 

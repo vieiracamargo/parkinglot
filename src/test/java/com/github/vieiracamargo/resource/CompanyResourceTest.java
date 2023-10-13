@@ -1,10 +1,8 @@
 package com.github.vieiracamargo.resource;
 
 import com.github.vieiracamargo.dto.input.AddressInput;
-import com.github.vieiracamargo.dto.input.CnpjNumberInput;
 import com.github.vieiracamargo.dto.input.CompanyInput;
 import com.github.vieiracamargo.dto.output.AddressOutput;
-import com.github.vieiracamargo.dto.output.CnpjNumberOutput;
 import com.github.vieiracamargo.dto.output.CompanyOutput;
 import com.github.vieiracamargo.service.CompanyService;
 import io.quarkus.test.InjectMock;
@@ -37,7 +35,6 @@ class CompanyResourceTest {
 
     @BeforeEach
     void setup() {
-        CnpjNumberInput cnpjNumber = new CnpjNumberInput("66261814000198");
         AddressInput addressInput = new AddressInput(
                 "Dos matagais",
                 "Goiânia",
@@ -50,7 +47,7 @@ class CompanyResourceTest {
 
         input = new CompanyInput(
                 "Joselu IT",
-                cnpjNumber,
+                "66261814000198",
                 addressInput,
                 "(95)97546-8754",
                 10,
@@ -76,7 +73,7 @@ class CompanyResourceTest {
     void test_registration_with_empty_input_values() {
         CompanyInput registration = new CompanyInput(
                 "",
-                new CnpjNumberInput(""),
+                "",
                 new AddressInput("", "", "", "", "", "", ""),
                 "",
                 null,
@@ -88,7 +85,6 @@ class CompanyResourceTest {
     }
     @Test
     void test_successful_registration() {
-        CnpjNumberOutput cnpjNumberOutput = new CnpjNumberOutput("66261814000198");
         AddressOutput addressOutput = new AddressOutput(
                 "Dos matagais",
                 "Goiânia",
@@ -102,7 +98,7 @@ class CompanyResourceTest {
         CompanyOutput expected = new CompanyOutput(
                 1L,
                 "Joselu IT",
-                cnpjNumberOutput,
+                "66261814000198",
                 addressOutput,
                 "(95)97546-8754",
                 10,

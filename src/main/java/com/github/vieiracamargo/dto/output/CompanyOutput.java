@@ -4,7 +4,7 @@ public record CompanyOutput(
 
         Long id,
         String name,
-        CnpjNumberOutput cnpjNumber,
+        String cnpjNumber,
         AddressOutput address,
         String phone,
         Integer numberOfMotocyclesSpaces,

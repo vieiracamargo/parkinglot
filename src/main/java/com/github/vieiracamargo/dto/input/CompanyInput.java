@@ -11,8 +11,8 @@ public record CompanyInput(
         @JsonProperty("name")
         String name,
 
-        @Valid
-        CnpjNumberInput cpnj,
+        @NotBlank
+        String cpnj,
         @NotNull
         @Valid
         @JsonProperty("address")

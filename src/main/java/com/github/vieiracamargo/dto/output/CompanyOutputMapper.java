@@ -1,7 +1,6 @@
 package com.github.vieiracamargo.dto.output;
 
 import com.github.vieiracamargo.entities.Address;
-import com.github.vieiracamargo.entities.CnpjNumber;
 import com.github.vieiracamargo.entities.Company;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -9,12 +8,11 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class CompanyOutputMapper {
     public CompanyOutput mapToCompanyOutput(Company company) {
         AddressOutput addressOutput = mapToAddressOutput(company.getAddress());
-        CnpjNumberOutput cnpjNumberOutput = mapToCnpjNumberOutput(company.getCnpjNumber());
 
         return new CompanyOutput(
                 company.getId(),
                 company.getName(),
-                cnpjNumberOutput,
+                company.getCnpj(),
                 addressOutput,
                 company.getPhone(),
                 company.getNumberOfMotocyclesSpaces(),
@@ -33,11 +31,4 @@ public class CompanyOutputMapper {
                 address.getComplement()
         );
     }
-
-    private CnpjNumberOutput mapToCnpjNumberOutput(CnpjNumber cnpjNumber) {
-        return new CnpjNumberOutput(
-                cnpjNumber.getNumber()
-        );
-    }
-
 }
